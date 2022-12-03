@@ -12,7 +12,7 @@ const priority = (charcode) => (charcode >= 97 ? charcode - 96 : charcode - 38);
     .reduce(
       (tot, [c1, c2]) =>
         tot +
-        priority(c1.filter((element) => c2.includes(element))[0].charCodeAt(0)),
+        priority(c1.find((element) => c2.includes(element)).charCodeAt(0)),
       0
     );
 
@@ -20,10 +20,10 @@ const priority = (charcode) => (charcode >= 97 ? charcode - 96 : charcode - 38);
   for (let i = 0; i < data.length; i += 3) {
     part2 += priority(
       data[i]
-        .filter(
+        .find(
           (element) =>
             data[i + 1].includes(element) && data[i + 2].includes(element)
-        )[0]
+        )
         .charCodeAt(0)
     );
   }
