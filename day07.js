@@ -3,7 +3,7 @@ import openInput from "./helpers/openInput.js";
 const TOTAL_SPACE = 70000000;
 const SIZE_NEEDED = 30000000;
 
-const setDirSize = (dir) => {
+const getDirSizes = (dir) => {
   let sizes = [];
   dir.size = dir.children.reduce((acc, child) => {
     if (child.type === "dir" && child.size === 0) {
@@ -14,22 +14,9 @@ const setDirSize = (dir) => {
   sizes.push(dir.size);
   return sizes;
 };
-const findSmallerDirThan = (dir, size) => {
-  let found = [];
-  if (!dir.root && dir.size < size) {
-    found.push(dir.size);
-  }
-  dir.children.forEach((child) => {
-    if (child.type === "dir") {
-      found = found.concat(findSmallerDirThan(child, size));
-    }
-  });
-  return found;
-};
 
 (async () => {
   const lines = (await openInput(process.argv[2])).split("\n");
-
   const root = { root: true, children: [], type: "dir", parent: null };
 
   let currentDir = null;
@@ -84,7 +71,8 @@ const findSmallerDirThan = (dir, size) => {
     }
     i++;
   }
-  const sizes = setDirSize(root);
+
+  const sizes = getDirSizes(root);
   const part1 = sizes
     .filter((val) => val < 100000)
     .reduce((acc, size) => acc + size, 0);
